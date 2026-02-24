@@ -1,0 +1,8 @@
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+
+# Run the YouTube news agent daily at 08:00 UTC
+# Override via the CRON_SCHEDULE env var — see docker-compose.yml entrypoint
+0 8 * * * root cd /app && /usr/local/bin/python agent.py >> /var/log/agent.log 2>&1
+
+# Required blank line at end of crontab

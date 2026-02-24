@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  youtube-news-agent:
+    build: .
+    container_name: youtube-news-agent
+    restart: unless-stopped
+    env_file: .env          # copy .env.template → .env and fill in your secrets
+    volumes:
+      - agent_logs:/var/log  # persist logs across restarts
+
+volumes:
+  agent_logs:
