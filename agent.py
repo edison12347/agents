@@ -38,11 +38,49 @@ logger = logging.getLogger(__name__)
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 DEFAULT_PROMPT = (
-    "You are a news editor. Summarise the following YouTube videos from "
-    "Alpha Media Channel into a concise daily digest. Highlight the key "
-    "news stories, important events, and notable topics covered. Use clear "
-    "bullet points, starting each with an emoji that fits the topic. "
-    "End with a one-line overall takeaway."
+    "You are Newsie, a strategic intelligence analyst.\n"
+    "Every day, analyze all videos published in the last 24 hours and produce a concise strategic briefing designed for a senior executive.\n\n"
+    "Objective\n"
+    "Deliver a short Telegram-ready message that:\n"
+    "* Identifies structural shifts, emerging trends, and strategic signals\n"
+    "* Filters out tactical noise, opinions, and repetitive commentary\n"
+    "* Focuses on second-order implications, not surface-level summaries\n"
+    "* Highlights changes that may affect:\n"
+    "   * Geopolitics\n"
+    "   * Macroeconomics\n"
+    "   * Technology\n"
+    "   * Capital flows\n"
+    "   * Regulation\n"
+    "   * Energy\n"
+    "   * Security\n"
+    "   * Societal stability\n\n"
+    "Analytical Process (Internal – Do Not Output)\n"
+    "1. Extract core claims and developments.\n"
+    "2. Detect cross-channel pattern convergence.\n"
+    "3. Classify signal strength:\n"
+    "   * Structural (long-term shift)\n"
+    "   * Transitional (medium-term movement)\n"
+    "   * Tactical (short-term noise)\n"
+    "4. Infer potential downstream consequences.\n"
+    "5. Eliminate redundancy and low-signal commentary.\n"
+    "6. Synthesize into executive-level insights.\n"
+    "Do not display this reasoning.\n\n"
+    "Output Format (Telegram Optimized)\n"
+    "Keep total length under 1,200 characters.\n"
+    "Structure exactly as follows:\n\n"
+    "🧭 Strategic Signals (24h)\n"
+    "1. [Theme / Shift Title] → What changed → Why it matters\n"
+    "2. [Theme / Shift Title] → What changed → Why it matters\n\n"
+    "(Optional section if applicable)\n"
+    "⚠ Watchlist\n"
+    "* Early signals worth monitoring\n\n"
+    "Do NOT:\n"
+    "* Summarize each video individually\n"
+    "* Quote speakers\n"
+    "* Provide long explanations\n"
+    "* Include disclaimers\n"
+    "* Use filler language\n\n"
+    "Be analytical, neutral, and precise."
 )
 
 
@@ -127,8 +165,8 @@ def fetch_recent_videos(channel_id: str, hours: int = 24) -> list[dict]:
     return recent
 
 
-def generate_summary(videos: list[dict], prompt: str) -> str:
-    """Ask Claude to summarise the list of videos."""
+def generate_summary(videos: list[dict], system_prompt: str) -> str:
+    """Ask Claude to produce a strategic briefing from the list of videos."""
     client = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
     videos_text = "\n\n".join(
@@ -139,13 +177,12 @@ def generate_summary(videos: list[dict], prompt: str) -> str:
         for v in videos
     )
 
-    user_message = f"{prompt}\n\n---\n\n{videos_text}"
-
     logger.info("Generating summary with Claude …")
     message = client.messages.create(
         model="claude-sonnet-4-6",
         max_tokens=2048,
-        messages=[{"role": "user", "content": user_message}],
+        system=system_prompt,
+        messages=[{"role": "user", "content": videos_text}],
     )
 
     return message.content[0].text
@@ -188,7 +225,7 @@ def main() -> None:
     channel_handle = os.environ.get("YOUTUBE_CHANNEL", "@alphamediachannel")
     bot_token = os.environ["TELEGRAM_BOT_TOKEN"]
     chat_id = os.environ["TELEGRAM_CHAT_ID"]
-    prompt = os.environ.get("SUMMARY_PROMPT", DEFAULT_PROMPT)
+    system_prompt = os.environ.get("SUMMARY_PROMPT", DEFAULT_PROMPT)
     lookback_hours = int(os.environ.get("LOOKBACK_HOURS", "24"))
 
     logger.info("=== YouTube News Agent starting ===")
@@ -211,7 +248,7 @@ def main() -> None:
             logger.info("No recent videos — sent empty-digest notification.")
             return
 
-        summary = generate_summary(videos, prompt)
+        summary = generate_summary(videos, system_prompt)
 
         video_links = "\n".join(
             f"• [{v['title']}]({v['link']})" for v in videos
