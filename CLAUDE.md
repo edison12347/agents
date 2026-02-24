@@ -1,8 +1,12 @@
 # Claude Code — Project Instructions
 
-## VPS SSH Access
+## Terminology
 
-This project runs on a remote VPS. Use the `ssh-vps` MCP tool to execute commands on it.
+- **Agent's VPS** / **Agent's Machine** — the remote server where the bot ecosystem runs. Use these terms when referring to it.
+
+## Agent's VPS SSH Access
+
+This project runs on the Agent's Machine. Use the `ssh-vps` MCP tool to execute commands on it.
 
 ### Default user: `claude-user`
 
@@ -36,7 +40,7 @@ Only continue once the user explicitly approves. Examples of actions that requir
 
 ### MCP server setup
 
-The `ssh-vps` MCP server should be configured locally with the `claude-user` account:
+The `ssh-vps` MCP server should be configured locally pointing to the Agent's Machine with the `claude-user` account:
 
 ```bash
 claude mcp add --transport stdio ssh-vps -- npx -y ssh-mcp -- \
@@ -51,5 +55,5 @@ This is a YouTube-news Telegram bot. Key files:
 - `agent.py` — main bot logic
 - `docker-compose.yml` — container configuration
 - `Dockerfile` — container image
-- `.env.template` — required environment variables (copy to `.env` on the VPS, never commit `.env`)
+- `.env.template` — required environment variables (copy to `.env` on the Agent's Machine, never commit `.env`)
 - `crontab` — scheduled tasks
