@@ -1,0 +1,17 @@
+version: 1
+backend: codex
+repo:
+  url: git@github.com:example-org/builder-target.git
+  default_branch: main
+release:
+  auto_push: true
+  tag_prefix: v
+doppler:
+  project: openclaw-builder
+  config: prod
+skills:
+  enabled: true
+  registry_file: /home/builder/generated_agents/skills_registry.json
+paths:
+  generated_agents_dir: /home/builder/generated_agents
+  logs_dir: /home/builder/logs

@@ -1,0 +1,10 @@
+[Unit]
+Description=Periodic Builder Runtime Validation
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=30m
+Unit=builder-healthcheck.service
+
+[Install]
+WantedBy=timers.target

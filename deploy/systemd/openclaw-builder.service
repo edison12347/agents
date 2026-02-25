@@ -1,0 +1,21 @@
+[Unit]
+Description=OpenClaw Builder Agent
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/builder
+Environment=OPENCLAW_CONFIG_PATH=/home/builder/config/openclaw.json
+Environment=DOPPLER_PROJECT=openclaw-builder
+Environment=DOPPLER_CONFIG=prd
+EnvironmentFile=-/etc/default/openclaw-builder
+ExecStart=/usr/bin/env bash -lc 'doppler run --project "$DOPPLER_PROJECT" --config "$DOPPLER_CONFIG" -- openclaw gateway run --port 18789 --bind lan --allow-unconfigured'
+Restart=always
+RestartSec=5
+StandardOutput=append:/home/builder/logs/openclaw-builder.log
+StandardError=append:/home/builder/logs/openclaw-builder.err.log
+
+[Install]
+WantedBy=multi-user.target

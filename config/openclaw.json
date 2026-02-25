@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "lastTouchedVersion": "2026.2.24",
+    "lastTouchedAt": "2026-02-25T18:29:45.928Z"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openai-codex/gpt-5.3-codex",
+        "fallbacks": [
+          "anthropic/claude-sonnet-4-5"
+        ]
+      },
+      "models": {
+        "openai-codex/gpt-5.3-codex": {},
+        "anthropic/claude-sonnet-4-5": {}
+      },
+      "workspace": "/home/builder/workspace"
+    },
+    "list": [
+      {
+        "id": "builder",
+        "default": true,
+        "model": "anthropic/claude-sonnet-4-5"
+      }
+    ]
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto",
+    "restart": true,
+    "ownerDisplay": "raw"
+  },
+  "session": {
+    "dmScope": "main",
+    "reset": {
+      "mode": "daily",
+      "atHour": 3
+    }
+  },
+  "cron": {
+    "enabled": true,
+    "maxConcurrentRuns": 1
+  },
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "dmPolicy": "allowlist",
+      "botToken": "${TELEGRAM_BOT_TOKEN}",
+      "allowFrom": [
+        "${TELEGRAM_OWNER_ID}"
+      ],
+      "groupPolicy": "allowlist",
+      "streaming": "off"
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "bind": "lan",
+    "controlUi": {
+      "enabled": true,
+      "basePath": "/clawagent",
+      "dangerouslyAllowHostHeaderOriginFallback": true
+    },
+    "auth": {
+      "mode": "token",
+      "token": "${OPENCLAW_GATEWAY_TOKEN}"
+    },
+    "trustedProxies": [
+      "127.0.0.1/32",
+      "10.0.0.0/8",
+      "172.16.0.0/12",
+      "192.168.0.0/16"
+    ]
+  },
+  "skills": {
+    "load": {
+      "extraDirs": [
+        "/home/builder/skills"
+      ]
+    },
+    "entries": {
+      "builder": {
+        "enabled": true
+      },
+      "doppler": {
+        "enabled": true
+      }
+    }
+  }
+}

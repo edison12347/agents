@@ -1,0 +1,8 @@
+name: support-agent
+description: OpenClaw support automation agent
+model:
+  primary: anthropic/claude-sonnet-4-5
+workspace_path: /home/builder/generated_agents/support-agent/workspace
+skills:
+  - builder
+channels: {}

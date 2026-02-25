@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+logs/
+builder.yaml
+generated_agents/*/.git/
+
+# Local runtime/state artifacts
+workspace/.openclaw/
+workspace/last_transcript.txt
+config/*.bak

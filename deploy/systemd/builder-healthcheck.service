@@ -1,0 +1,11 @@
+[Unit]
+Description=Builder Runtime Validation
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/home/builder
+ExecStart=/usr/bin/env bash -lc 'source /home/builder/.venv/bin/activate && python /home/builder/scripts/run_builder.py --action validate-runtime'
+StandardOutput=append:/home/builder/logs/builder-health.log
+StandardError=append:/home/builder/logs/builder-health.err.log
