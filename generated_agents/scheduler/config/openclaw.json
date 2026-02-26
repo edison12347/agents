@@ -1,0 +1,37 @@
+{
+  "gateway": {
+    "mode": "local",
+    "bind": "localhost"
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "openai-codex/gpt-5.3-codex"
+      },
+      "workspace": "/home/builder/generated_agents/scheduler/workspace"
+    },
+    "list": [
+      {
+        "id": "scheduler",
+        "default": true
+      }
+    ]
+  },
+  "skills": {
+    "entries": {
+      "builder": {
+        "enabled": true
+      }
+    },
+    "load": {
+      "extraDirs": [
+        "/home/builder/generated_agents/scheduler/skills"
+      ]
+    }
+  },
+  "channels": {},
+  "cron": {
+    "enabled": true,
+    "maxConcurrentRuns": 1
+  }
+}

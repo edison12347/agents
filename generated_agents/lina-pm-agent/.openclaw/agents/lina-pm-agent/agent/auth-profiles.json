@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "profiles": {
+    "openai-codex:default": {
+      "type": "oauth",
+      "provider": "openai-codex",
+      "access": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjE5MzQ0ZTY1LWJiYzktNDRkMS1hOWQwLWY5NTdiMDc5YmQwZSIsInR5cCI6IkpXVCJ9.eyJhdWQiOlsiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS92MSJdLCJjbGllbnRfaWQiOiJhcHBfRU1vYW1FRVo3M2YwQ2tYYVhwN2hyYW5uIiwiZXhwIjoxNzcyOTA3ODI4LCJodHRwczovL2FwaS5vcGVuYWkuY29tL2F1dGgiOnsiY2hhdGdwdF9hY2NvdW50X2lkIjoiNDEzYTIwZGMtOGJmNi00MjgyLTliZWYtNmM4MmQyMzA5NTY1IiwiY2hhdGdwdF9hY2NvdW50X3VzZXJfaWQiOiJ1c2VyLXRXdU93UWlrRzlyUVJGdlMyNHhDSXpsel9fNDEzYTIwZGMtOGJmNi00MjgyLTliZWYtNmM4MmQyMzA5NTY1IiwiY2hhdGdwdF9jb21wdXRlX3Jlc2lkZW5jeSI6Im5vX2NvbnN0cmFpbnQiLCJjaGF0Z3B0X3BsYW5fdHlwZSI6ImdvIiwiY2hhdGdwdF91c2VyX2lkIjoidXNlci10V3VPd1Fpa0c5clFSRnZTMjR4Q0l6bHoiLCJ1c2VyX2lkIjoidXNlci10V3VPd1Fpa0c5clFSRnZTMjR4Q0l6bHoifSwiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS9wcm9maWxlIjp7ImVtYWlsIjoiZWR1YXJkLmNodWRhaWtpbkBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZX0sImlhdCI6MTc3MjA0MzgyOCwiaXNzIjoiaHR0cHM6Ly9hdXRoLm9wZW5haS5jb20iLCJqdGkiOiI2YmZiMmYxYy0wNzMyLTQzNTAtODA0Yy1hMzg1NTFlZTlkZjAiLCJuYmYiOjE3NzIwNDM4MjgsInB3ZF9hdXRoX3RpbWUiOjE3NzIwNDM3OTkzOTEsInNjcCI6WyJvcGVuaWQiLCJwcm9maWxlIiwiZW1haWwiLCJvZmZsaW5lX2FjY2VzcyJdLCJzZXNzaW9uX2lkIjoiYXV0aHNlc3Nfc1R5TnV1cE1ON05zRFdUY25IRlFpVUgyIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMDQxNzgzODE4MDIyNDYxOTc4NTgifQ.QFmXtfaG3jlmzWmjinb2v1aRXXqSsHCe3fjbdDVWGIUiw5K25YpvpQALlfbZxf4gzmLFiu0yuRNZvTKrMvXbY1Y4LFFLr_CgFvHh9xrrc1V8igr0HoMv_F3JUcudhuJ9tA2cUeDdvTzbZ2wVXqxyOxdF8rgEQiO6ZeA1N0BkfygYnHk3GiYmcTwDszgpWf8czt5I1VX9Exm5_kaE7smRpcMhtMWhdt8Vi4d_SG48jsyhzOqrTCvWayrjqX7VJnYLlNueq5Uwga6WYFfiv8GSU23dp0LHa4diMatMZcXQ5TKi3elXEKxN8OY-CHwfUP7tz4xWuQpaDSjAwyRQ1cRI3UDuSVfKEfIfcL2Yw8ycch1Xs3ffXvnj3_ZCfgTf5mayIsiLh7ectX4Cgjjt-7lMEWbO_VVddx7WN-UNwi_Z3I_elv9Nmt-UekPemOJ-REUMPizPoB9_ZCFwsqGE6OR6BZlNqfK8hZ8nYF2D9iCKaITAXtmpBQ3fRmOR-mfZCskgPdc26aJn3N4sloz2aE6KFerTNYlZ5-ARfEQsr0vvUFvy0HJOxsORbR9jBCPYP0lsIT_ptDEJomhUsIo02jEIZYtJ-bk71AYia5f5MCXj_fVPebT5VPGWcbzR2wg_2hJ_l7PLDc5LYhrNluIdmZhZriRAg8YKLYDsGrfHZCQ0Iek",
+      "refresh": "rt_O9Ge151DCwVpzfFAqA0jg9xDXRAQnJywX7rRo2TxVhc.Ukzn1x1cUVfyNvYHJHmOMe8w-yPEvrrxntcYKdixXpU",
+      "expires": 1772907827562,
+      "accountId": "413a20dc-8bf6-4282-9bef-6c82d2309565"
+    },
+    "anthropic:claude-code": {
+      "type": "token",
+      "provider": "anthropic",
+      "token": "CHaUy2waxB4rxgWN7VzzFLywgv7DCqtvVTsrm1R0JkN934OP#Oq6DP6GqOkEjJlZ-qp03ktpXofIt5Zo6_QLomeBdNWM"
+    }
+  },
+  "lastGood": {
+    "openai-codex": "openai-codex:default"
+  },
+  "usageStats": {
+    "anthropic:claude-code": {
+      "errorCount": 4,
+      "failureCounts": {
+        "auth": 4
+      },
+      "lastFailureAt": 1772101717909,
+      "cooldownUntil": 1772105317909
+    },
+    "openai-codex:default": {
+      "lastUsed": 1772103599572,
+      "errorCount": 0
+    }
+  }
+}

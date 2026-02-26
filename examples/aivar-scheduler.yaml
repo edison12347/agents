@@ -1,0 +1,8 @@
+name: scheduler
+description: Aivar scheduling agent migrated into builder workspace.
+model:
+  primary: openai-codex/gpt-5.3-codex
+workspace_path: /home/builder/generated_agents/scheduler/workspace
+skills:
+  - builder
+channels: {}
