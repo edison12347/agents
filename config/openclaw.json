@@ -22,6 +22,11 @@
         "id": "builder",
         "default": true,
         "model": "anthropic/claude-sonnet-4-5"
+      },
+      {
+        "id": "scheduler",
+        "workspace": "/home/builder/generated_agents/scheduler/workspace",
+        "model": "openai-codex/gpt-5.3-codex"
       }
     ]
   },
