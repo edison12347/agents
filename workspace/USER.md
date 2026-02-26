@@ -6,7 +6,7 @@ _Learn about the person you're helping. Update this as you go._
 - **What to call them:**
 - **Pronouns:** _(optional)_
 - **Timezone:**
-- **Notes:** Prefers CLI workflows when possible; first check for built-in OpenClaw features before external CLI steps.
+- **Notes:** Prefers CLI workflows when possible; first check for built-in OpenClaw features before external CLI steps. For completed agent creation work, expects commit + push to GitHub every time.
 
 ## Context
 

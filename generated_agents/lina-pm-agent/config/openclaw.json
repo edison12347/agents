@@ -1,7 +1,7 @@
 {
   "gateway": {
     "mode": "local",
-    "bind": "localhost"
+    "bind": "loopback"
   },
   "agents": {
     "defaults": {
@@ -31,7 +31,14 @@
   },
   "channels": {
     "telegram": {
-      "mode": "separate-bot"
+      "enabled": true,
+      "botToken": "${TELEGRAM_BOT_TOKEN_LINA}",
+      "dmPolicy": "allowlist",
+      "allowFrom": [
+        "${TELEGRAM_OWNER_ID}"
+      ],
+      "groupPolicy": "allowlist",
+      "streaming": "off"
     }
   },
   "cron": {
