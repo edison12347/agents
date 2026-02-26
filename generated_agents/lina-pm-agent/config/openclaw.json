@@ -13,7 +13,12 @@
     "list": [
       {
         "id": "lina-pm-agent",
-        "default": true
+        "default": true,
+        "subagents": {
+          "allowAgents": [
+            "builder"
+          ]
+        }
       },
       {
         "id": "builder",
