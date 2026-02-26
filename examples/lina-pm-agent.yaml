@@ -1,0 +1,10 @@
+name: lina-pm-agent
+description: Telegram project manager agent that structures ideas, creates implementation plans, delegates tasks to Builder, and reports progress.
+model:
+  primary: anthropic/claude-sonnet-4-5
+workspace_path: /home/builder/generated_agents/lina-pm-agent/workspace
+skills:
+  - builder
+channels:
+  telegram:
+    mode: separate-bot

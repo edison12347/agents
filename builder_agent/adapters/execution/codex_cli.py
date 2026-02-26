@@ -6,7 +6,7 @@ from builder_agent.adapters.execution.base import ExecutionAdapter, ExecutionRes
 class CodexCliAdapter(ExecutionAdapter):
     name = "codex"
     version_cmd = ["codex", "--version"]
-    auth_check_cmd = ["codex", "auth", "status"]
+    auth_check_cmd = ["codex", "login", "status"]
 
     def execute(self, prompt: str) -> ExecutionResult:
         res = self.runner.run(["codex", "exec", prompt])
