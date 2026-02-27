@@ -8,12 +8,17 @@ Type=simple
 User=root
 WorkingDirectory=/home/builder
 Environment=OPENCLAW_CONFIG_PATH=/home/builder/config/openclaw.json
+Environment=OPENCLAW_STATE_DIR=/root/.openclaw
 Environment=DOPPLER_PROJECT=openclaw-builder
 Environment=DOPPLER_CONFIG=prd
 EnvironmentFile=-/etc/default/openclaw-builder
-ExecStart=/usr/bin/env bash -lc 'doppler run --project "$DOPPLER_PROJECT" --config "$DOPPLER_CONFIG" -- openclaw gateway run --port 18789 --bind lan --allow-unconfigured'
-Restart=always
-RestartSec=5
+ExecStartPre=/usr/bin/env bash -lc '/home/builder/scripts/openclaw-prestart-port.sh 18789 8'
+ExecStartPre=/usr/bin/env bash -lc '/home/builder/scripts/openclaw-startup-check.py'
+ExecStart=/usr/bin/env bash -lc 'doppler run --project "$DOPPLER_PROJECT" --config "$DOPPLER_CONFIG" -- openclaw gateway run --port 18789 --bind lan'
+Restart=on-failure
+RestartSec=10
+StartLimitIntervalSec=300
+StartLimitBurst=3
 StandardOutput=append:/home/builder/logs/openclaw-builder.log
 StandardError=append:/home/builder/logs/openclaw-builder.err.log
 

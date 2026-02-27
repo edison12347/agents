@@ -21,11 +21,16 @@
       {
         "id": "builder",
         "default": true,
-        "model": "anthropic/claude-sonnet-4-5"
+        "model": "openai-codex/gpt-5.3-codex"
       },
       {
         "id": "scheduler",
         "workspace": "/home/builder/generated_agents/scheduler/workspace",
+        "model": "openai-codex/gpt-5.3-codex"
+      },
+      {
+        "id": "lina",
+        "workspace": "/home/builder/generated_agents/lina-pm-agent/workspace",
         "model": "openai-codex/gpt-5.3-codex"
       }
     ]

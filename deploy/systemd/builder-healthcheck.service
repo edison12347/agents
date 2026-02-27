@@ -1,11 +1,13 @@
 [Unit]
-Description=Builder Runtime Validation
+Description=Builder Runtime Validation + Alerting
 After=network-online.target
 
 [Service]
 Type=oneshot
 User=root
 WorkingDirectory=/home/builder
-ExecStart=/usr/bin/env bash -lc 'source /home/builder/.venv/bin/activate && python /home/builder/scripts/run_builder.py --action validate-runtime'
+Environment=DOPPLER_PROJECT=openclaw-builder
+Environment=DOPPLER_CONFIG=prd
+ExecStart=/usr/bin/env bash -lc 'doppler run --project "$DOPPLER_PROJECT" --config "$DOPPLER_CONFIG" -- /home/builder/scripts/openclaw-healthcheck.sh'
 StandardOutput=append:/home/builder/logs/builder-health.log
 StandardError=append:/home/builder/logs/builder-health.err.log

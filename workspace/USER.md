@@ -6,7 +6,7 @@ _Learn about the person you're helping. Update this as you go._
 - **What to call them:**
 - **Pronouns:** _(optional)_
 - **Timezone:**
-- **Notes:** Prefers CLI workflows when possible; first check for built-in OpenClaw features before external CLI steps. For completed agent creation work, expects commit + push to GitHub every time. For future agent creations, proactively verify provider auth/model availability and avoid known model/auth cooldown pitfalls before go-live testing.
+- **Notes:** Prefers CLI workflows when possible; first check for built-in OpenClaw features before external CLI steps. For completed agent creation work, expects commit + push to GitHub every time. For future agent creations, proactively verify provider auth/model availability and avoid known model/auth cooldown pitfalls before go-live testing. Going forward, validate agent work by sending a direct test message and only mark done after the agent replies successfully.
 
 ## Context
 
