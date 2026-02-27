@@ -13,7 +13,17 @@
     "list": [
       {
         "id": "scheduler",
-        "default": true
+        "default": true,
+        "subagents": {
+          "allowAgents": [
+            "builder"
+          ]
+        }
+      },
+      {
+        "id": "builder",
+        "workspace": "/home/builder/workspace",
+        "model": "openai-codex/gpt-5.3-codex"
       }
     ]
   },
