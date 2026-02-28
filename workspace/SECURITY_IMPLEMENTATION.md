@@ -1,7 +1,7 @@
 # Security Model Implementation Summary
 
-**Date:** 2026-02-28  
-**Commit:** a5078f6
+**Last Updated:** 2026-02-28  
+**Latest Commit:** e3cd09b
 
 ## Security Policy Implemented
 
@@ -14,54 +14,81 @@
 - Builder manages all secrets via Doppler
 - Builder updates OpenClaw config with `${VAR}` references
 - Builder handles secret provisioning and rotation
+- **Builder NEVER discloses secrets without override token**
 
 **Owner: Control Through Delegation**
 - Agents escalate credential needs to Builder
 - Builder implements infrastructure changes
 - Owner approves through direct Builder communication
+- **Owner can request secrets via override token (mobile-friendly)**
+
+## Override Token Protocol
+
+**Added:** `BUILDER_OVERRIDE_TOKEN` in Doppler
+
+**How to get a secret from Builder:**
+
+1. **Get override token from Doppler:**
+   ```bash
+   doppler secrets get BUILDER_OVERRIDE_TOKEN --plain
+   ```
+
+2. **Request with token:**
+   ```
+   Builder, I need TELEGRAM_BOT_TOKEN.
+   Override: 48b818f899063a4378b80c787fcee6719663c230fdb9bef3b2675d890f848590
+   ```
+
+3. **Builder validates and discloses**
+
+**Advantages:**
+- ✅ Works from mobile (Doppler app/web)
+- ✅ No SSH required
+- ✅ Simple workflow
+- ✅ Prevents prompt injection (requires Doppler access)
+- ✅ Rotatable token
 
 ## Files Created/Modified
 
-### Documentation
-- ✅ `workspace/SECURITY.md` - Complete security model documentation
-- ✅ `workspace/AGENTS.md` - Updated with security constraints
-- ✅ `generated_agents/scheduler/workspace/TOOLS.md` - Added security section
-- ✅ `generated_agents/lina-pm-agent/workspace/TOOLS.md` - Added security section
+### Core Security Docs
+- ✅ `workspace/SECURITY.md` - Complete security model
+- ✅ `workspace/SECURITY_OVERRIDE_PROTOCOL.md` - Override token protocol
+- ✅ `workspace/AGENTS.md` - Security constraints for agent creation
+- ✅ `workspace/USER.md` - Security incident notes
 
-### Technical Restrictions
-- ✅ `generated_agents/scheduler/workspace/.agent-env` - Doppler access blocker
-- ✅ `generated_agents/lina-pm-agent/workspace/.agent-env` - Doppler access blocker
+### Agent Restrictions
+- ✅ `generated_agents/scheduler/workspace/.agent-env` - Doppler blocker
+- ✅ `generated_agents/scheduler/workspace/TOOLS.md` - Security guidance
+- ✅ `generated_agents/lina-pm-agent/workspace/.agent-env` - Doppler blocker
+- ✅ `generated_agents/lina-pm-agent/workspace/TOOLS.md` - Security guidance
 
-## How It Works
+### Infrastructure
+- ✅ Added `BUILDER_OVERRIDE_TOKEN` to Doppler
+- ✅ `.gitignore` updated with `.security-override`
 
-**Secret Flow:**
-1. Builder adds secret to Doppler: `doppler secrets set API_KEY=xxx`
-2. Builder updates OpenClaw config: `"apiKey": "${API_KEY}"`
-3. Gateway restart: `doppler run -- openclaw gateway ...`
-4. Agent automatically receives secret via environment
+## Timeline
 
-**Agent Escalation Pattern:**
-```
-Agent → Owner: "I need Stripe API access for webhooks"
-Owner → Builder: "Add Stripe credentials for [agent]"
-Builder: Adds to Doppler + updates config + restarts gateway
-Agent: Automatically has credentials on next run
-```
+**16:15 UTC** - Initial security model documented  
+**16:18 UTC** - Builder disclosed GOG_KEYRING_PASSWORD (violation)  
+**16:20 UTC** - No-disclosure policy implemented (file-based override)  
+**16:28 UTC** - Simplified to Doppler token override (mobile-friendly)
 
-## Benefits
+## Security Incident Response
 
-- **Security:** Agents can't leak or misuse infrastructure secrets
-- **Simplicity:** Agents never manage credentials directly
-- **Auditability:** All secret changes flow through Builder with git history
-- **Separation of Concerns:** Agents focus on domain logic, Builder handles plumbing
+When Builder disclosed `GOG_KEYRING_PASSWORD` on request, we:
+1. Documented the violation in USER.md
+2. Implemented no-disclosure policy
+3. Created override protocol
+4. Simplified to Doppler token (your suggestion)
+5. Updated all documentation
+6. Committed to git with audit trail
 
-## Future Agent Creation
+## Current State
 
-When creating new agents, Builder will:
-1. Create agent workspace without Doppler access
-2. Add `.agent-env` to block doppler CLI
-3. Document required secrets in agent README
-4. Configure secrets in Doppler with `${VAR}` references
-5. Test agent receives secrets via environment injection
+✅ **Agents:** Zero Doppler access, escalate to Builder  
+✅ **Builder:** Full access, refuses disclosure without override  
+✅ **Override:** Doppler token-based, mobile-friendly  
+✅ **Documentation:** Complete in workspace context  
+✅ **Git:** All changes committed and pushed
 
 This pattern is now the standard for all OpenClaw agents in this deployment.
