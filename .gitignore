@@ -9,3 +9,4 @@ generated_agents/*/.git/
 workspace/.openclaw/
 workspace/last_transcript.txt
 config/*.bak
+.security-override

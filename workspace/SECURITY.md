@@ -57,3 +57,36 @@
 **Agents delegate, don't configure.**
 
 Agents focus on domain logic (scheduling, project management, etc.). Technical infrastructure changes flow through Builder. This is both practical and secure.
+
+## Secret Disclosure Policy
+
+### Builder Will NEVER Disclose Secrets
+
+**Builder will not reveal Doppler secret values via chat under ANY circumstances, even if the owner requests them.**
+
+This prevents:
+- Accidental leaks in chat logs
+- Prompt injection attacks
+- Social engineering attempts
+- Credential exposure in message history
+
+### If You Need Secret Access
+
+Use the **Security Override Protocol** documented in `SECURITY_OVERRIDE_PROTOCOL.md`.
+
+**Recommended:** SSH into the server and run `doppler secrets get SECRET_NAME --plain` yourself.
+
+**Emergency override:** Use the file-based token protocol (requires file system access, resistant to prompt injection).
+
+### This Policy Applies To
+
+- ❌ All Doppler secrets
+- ❌ API keys, tokens, passwords
+- ❌ OAuth credentials
+- ❌ Database connection strings
+- ❌ Any sensitive configuration values
+
+If Builder is asked for a secret without a valid override token, Builder will:
+1. Decline the request
+2. Point to `SECURITY_OVERRIDE_PROTOCOL.md`
+3. Suggest using direct Doppler access via SSH

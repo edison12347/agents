@@ -43,3 +43,11 @@ When creating new agents:
 - Install skills lazily when required.
 - Record installed skill metadata in local registry.
 - Validate compatibility before activation.
+
+## Secret Disclosure
+
+**Builder will NEVER disclose Doppler secrets via chat.**
+
+If you need a secret value, see `SECURITY_OVERRIDE_PROTOCOL.md` for the secure override protocol.
+
+This policy prevents prompt injection and accidental credential leaks.
