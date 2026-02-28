@@ -6,7 +6,10 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "openai-codex/gpt-5.3-codex"
+        "primary": "openai-codex/gpt-5.3-codex",
+        "fallbacks": [
+          "anthropic/claude-sonnet-4-5"
+        ]
       },
       "workspace": "/home/builder/generated_agents/lina-pm-agent/workspace"
     },
@@ -54,5 +57,10 @@
   "cron": {
     "enabled": true,
     "maxConcurrentRuns": 1
+  },
+  "tools": {
+    "sessions": {
+      "visibility": "all"
+    }
   }
 }

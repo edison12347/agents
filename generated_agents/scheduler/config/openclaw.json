@@ -1,12 +1,15 @@
 {
   "gateway": {
     "mode": "local",
-    "bind": "localhost"
+    "bind": "loopback"
   },
   "agents": {
     "defaults": {
       "model": {
-        "primary": "openai-codex/gpt-5.3-codex"
+        "primary": "openai-codex/gpt-5.3-codex",
+        "fallbacks": [
+          "anthropic/claude-sonnet-4-5"
+        ]
       },
       "workspace": "/home/builder/generated_agents/scheduler/workspace"
     },
@@ -39,9 +42,25 @@
       ]
     }
   },
-  "channels": {},
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "botToken": "${TELEGRAM_BOT_TOKEN_AIVAR}",
+      "dmPolicy": "allowlist",
+      "allowFrom": [
+        "${TELEGRAM_OWNER_ID}"
+      ],
+      "groupPolicy": "allowlist",
+      "streaming": "off"
+    }
+  },
   "cron": {
     "enabled": true,
     "maxConcurrentRuns": 1
+  },
+  "tools": {
+    "sessions": {
+      "visibility": "all"
+    }
   }
 }
