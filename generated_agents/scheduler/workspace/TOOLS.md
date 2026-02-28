@@ -49,8 +49,8 @@ Add whatever helps you do your job. This is your cheat sheet.
 
 Example:
 ```
-Builder, I need access to Linear API to sync project tasks.
-Please add LINEAR_API_KEY to my environment.
+Builder, I need access to Stripe API to handle payment webhooks.
+Please add STRIPE_API_KEY to my environment.
 ```
 
 Builder will add the secret to Doppler and restart the gateway. You'll have it automatically.

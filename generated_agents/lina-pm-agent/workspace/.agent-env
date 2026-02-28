@@ -1,0 +1,7 @@
+# Agent environment restrictions
+# Remove Doppler CLI from PATH to enforce zero-access policy
+
+export PATH=$(echo "$PATH" | tr ':' '\n' | grep -v '/usr/bin/doppler' | grep -v '/usr/local/bin/doppler' | tr '\n' ':' | sed 's/:$//')
+
+# Disable doppler if somehow accessed
+alias doppler='echo "⛔ Doppler access denied. Agents receive secrets via OpenClaw environment injection only. Contact Builder for infrastructure changes." && false'
