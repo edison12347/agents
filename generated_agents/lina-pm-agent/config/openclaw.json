@@ -61,6 +61,9 @@
   "tools": {
     "sessions": {
       "visibility": "all"
+    },
+    "agentToAgent": {
+      "enabled": true
     }
   }
 }
