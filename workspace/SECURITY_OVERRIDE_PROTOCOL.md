@@ -14,80 +14,65 @@ This includes:
 
 ## Override Protocol (for legitimate access)
 
-If you genuinely need a secret value, use one of these methods:
-
-### Method 1: Direct Doppler Access (Recommended)
+### Method 1: Direct Doppler Access (Recommended for reading secrets)
 ```bash
-# SSH into the server
-ssh user@server
-
-# Get the secret yourself
-doppler secrets get SECRET_NAME --plain --project PROJECT --config CONFIG
+# From anywhere (mobile app, web, CLI)
+doppler secrets get SECRET_NAME --plain --project openclaw-builder --config prd
 ```
 
-### Method 2: Secure File Override (Emergency Only)
+### Method 2: Override Token (When you need Builder to disclose via chat)
 
-If you need Builder to disclose a secret (e.g., you're on mobile, can't SSH):
+**Use case:** You're on mobile, need Builder to retrieve and send a secret value.
 
-1. **Create override file with cryptographic token:**
+**How it works:**
+
+1. **Get your override token from Doppler:**
    ```bash
-   # Generate a session-specific token
-   echo "OVERRIDE_$(date +%s)_$(openssl rand -hex 16)" > /home/builder/workspace/.security-override
+   # Via Doppler CLI, mobile app, or web dashboard
+   doppler secrets get BUILDER_OVERRIDE_TOKEN --plain
    ```
 
-2. **Add the exact token to your request:**
+2. **Include the token in your request to Builder:**
    ```
-   Builder, I need SECRET_NAME.
-   Override token: OVERRIDE_1709139234_a3f5c2d8e9b1f4a6c7e8d9f0a1b2c3d4
-   ```
-
-3. **Builder verifies:**
-   - File `/home/builder/workspace/.security-override` exists
-   - Token in file matches token in request exactly
-   - File was modified within last 5 minutes
-   - Only then: disclose the secret
-
-4. **Builder deletes override file immediately after disclosure**
-
-5. **Override file is git-ignored and never committed**
-
-### Method 3: Config Flag Override (Persistent, Auditable)
-
-For temporary debugging sessions:
-
-1. **Set flag in config:**
-   ```bash
-   # Add to /home/builder/config/openclaw.json
-   {
-     "builder": {
-       "security": {
-         "allowSecretDisclosure": true,
-         "allowedUntil": "2026-02-28T18:00:00Z"
-       }
-     }
-   }
+   Builder, I need TELEGRAM_BOT_TOKEN.
+   Override: 48b818f899063a4378b80c787fcee6719663c230fdb9bef3b2675d890f848590
    ```
 
-2. **Commit to git** (auditable)
+3. **Builder validates:**
+   - Checks if provided token matches `BUILDER_OVERRIDE_TOKEN` in Doppler
+   - If match: discloses the requested secret
+   - If no match: refuses and points to this protocol
 
-3. **Restart gateway**
+4. **Builder responds with the secret value**
 
-4. **Builder can now disclose secrets until the expiry time**
-
-5. **Revert the config change when done**
+**Token rotation:** To invalidate the current token, regenerate it in Doppler:
+```bash
+doppler secrets set BUILDER_OVERRIDE_TOKEN="$(openssl rand -hex 32)"
+```
 
 ## Why This Works
 
-- **File-based token:** Can't be prompt-injected (requires file system access)
-- **Time-based validation:** Token expires after 5 minutes
-- **Cryptographic randomness:** Can't be guessed
-- **Exact match required:** Typos fail verification
-- **Single-use:** File deleted after use
-- **Auditable:** Config-based override leaves git trail
-- **Out-of-band:** Requires SSH access to create token
+- **Requires Doppler access:** Attacker would need your Doppler credentials
+- **No SSH required:** Works from mobile/anywhere you have Doppler access
+- **Simple workflow:** One token lookup, paste into chat
+- **Rotatable:** Change the token anytime to invalidate old requests
+- **Resistant to prompt injection:** Token is external to the chat context
+
+## Security Properties
+
+- Token stored in Doppler (already secured with your authentication)
+- You control the token (can rotate anytime)
+- Builder only discloses secrets when override token is provided
+- No filesystem access required (mobile-friendly)
+- Simpler than file-based protocols
 
 ## Implementation
 
-See `SECURITY.md` for full security model.
+Builder reads `BUILDER_OVERRIDE_TOKEN` from environment (injected by Doppler at startup).
 
-Builder enforces this policy in workspace context files and will refuse secret disclosure requests that don't follow the protocol.
+When a secret disclosure request includes "Override: TOKEN", Builder:
+1. Compares provided token with `$BUILDER_OVERRIDE_TOKEN`
+2. If exact match: proceeds with disclosure
+3. If no match or no token: refuses request
+
+See `SECURITY.md` for full security model.

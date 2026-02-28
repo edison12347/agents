@@ -60,9 +60,9 @@ Agents focus on domain logic (scheduling, project management, etc.). Technical i
 
 ## Secret Disclosure Policy
 
-### Builder Will NEVER Disclose Secrets
+### Builder Will NEVER Disclose Secrets (Without Override Token)
 
-**Builder will not reveal Doppler secret values via chat under ANY circumstances, even if the owner requests them.**
+**Builder will not reveal Doppler secret values via chat unless you provide the override token.**
 
 This prevents:
 - Accidental leaks in chat logs
@@ -70,23 +70,57 @@ This prevents:
 - Social engineering attempts
 - Credential exposure in message history
 
-### If You Need Secret Access
+### When You Need Secret Access
 
-Use the **Security Override Protocol** documented in `SECURITY_OVERRIDE_PROTOCOL.md`.
+**Option 1: Direct Access (Recommended)**
+Use Doppler CLI, mobile app, or web dashboard:
+```bash
+doppler secrets get SECRET_NAME --plain --project openclaw-builder --config prd
+```
 
-**Recommended:** SSH into the server and run `doppler secrets get SECRET_NAME --plain` yourself.
+**Option 2: Ask Builder (With Override Token)**
+If you need Builder to retrieve and send a secret (e.g., on mobile, need a formatted response):
 
-**Emergency override:** Use the file-based token protocol (requires file system access, resistant to prompt injection).
+1. Get override token from Doppler:
+   ```bash
+   doppler secrets get BUILDER_OVERRIDE_TOKEN --plain
+   ```
+
+2. Include it in your request:
+   ```
+   Builder, I need SECRET_NAME.
+   Override: [paste token here]
+   ```
+
+3. Builder validates the token and discloses the secret
+
+See `SECURITY_OVERRIDE_PROTOCOL.md` for complete protocol details.
 
 ### This Policy Applies To
 
-- ❌ All Doppler secrets
+- ❌ All Doppler secrets (without override token)
 - ❌ API keys, tokens, passwords
 - ❌ OAuth credentials
 - ❌ Database connection strings
 - ❌ Any sensitive configuration values
 
-If Builder is asked for a secret without a valid override token, Builder will:
+### How Builder Handles Requests
+
+**Without override token:**
 1. Decline the request
 2. Point to `SECURITY_OVERRIDE_PROTOCOL.md`
-3. Suggest using direct Doppler access via SSH
+3. Suggest using direct Doppler access
+
+**With valid override token:**
+1. Verify token matches `BUILDER_OVERRIDE_TOKEN` from Doppler
+2. If match: retrieve and disclose the requested secret
+3. If no match: treat as invalid request and decline
+
+### Token Rotation
+
+You can rotate the override token anytime:
+```bash
+doppler secrets set BUILDER_OVERRIDE_TOKEN="$(openssl rand -hex 32)"
+```
+
+This immediately invalidates the old token and requires Builder gateway restart to pick up the new value.
