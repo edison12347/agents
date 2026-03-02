@@ -53,3 +53,11 @@ _Last updated: 2026-03-02 (fixed stale-token restart logic in healthcheck)_
 - **Other agents: NO skills** - they use OpenClaw tools only
 - **New agents: Start with zero skills** unless explicitly needed
 - **Violation response:** Remove immediately, restart agent, commit
+
+## Scheduled Reports
+
+- **Memory Benchmark Report:** Every Friday 09:00 UTC via healthcheck cron
+  - Script: `/home/builder/scripts/memory_benchmark.py --compare`
+  - Compares pre-memory vs post-memory session metrics
+  - Sends Telegram report automatically
+  - Documented in: `CLAUDE_CONTEXT_LOG.md` (2026-03-02 entry)
