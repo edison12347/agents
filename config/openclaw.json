@@ -15,13 +15,36 @@
         "openai-codex/gpt-5.3-codex": {},
         "anthropic/claude-sonnet-4-5": {}
       },
-      "workspace": "/home/builder/workspace"
+      "workspace": "/home/builder/workspace",
+      "compaction": {
+        "memoryFlush": {
+          "enabled": true,
+          "prompt": "Write any lasting notes, decisions, or user preferences to memory/YYYY-MM-DD.md. Update MEMORY.md if something is worth keeping long-term. Reply with NO_REPLY if nothing to store."
+        }
+      }
     },
     "list": [
       {
         "id": "builder",
         "default": true,
-        "model": "anthropic/claude-sonnet-4-5"
+        "model": "anthropic/claude-sonnet-4-5",
+        "memorySearch": {
+          "provider": "local",
+          "local": {
+            "modelPath": "hf:ggml-org/embeddinggemma-300m-qat-q8_0-GGUF/embeddinggemma-300m-qat-Q8_0.gguf"
+          },
+          "fallback": "none",
+          "query": {
+            "hybrid": {
+              "enabled": true,
+              "vectorWeight": 0.7,
+              "textWeight": 0.3,
+              "mmr": { "enabled": true, "lambda": 0.7 },
+              "temporalDecay": { "enabled": true, "halfLifeDays": 30 }
+            }
+          },
+          "sync": { "watch": true }
+        }
       },
       {
         "id": "scheduler",

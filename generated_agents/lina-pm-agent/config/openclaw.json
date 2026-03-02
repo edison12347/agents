@@ -30,18 +30,6 @@
       }
     ]
   },
-  "skills": {
-    "entries": {
-      "builder": {
-        "enabled": true
-      }
-    },
-    "load": {
-      "extraDirs": [
-        "/home/builder/generated_agents/lina-pm-agent/skills"
-      ]
-    }
-  },
   "channels": {
     "telegram": {
       "enabled": true,

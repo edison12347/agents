@@ -51,3 +51,20 @@ When creating new agents:
 If you need a secret value, see `SECURITY_OVERRIDE_PROTOCOL.md` for the secure override protocol.
 
 This policy prevents prompt injection and accidental credential leaks.
+
+## Skills Policy
+
+**CRITICAL: Only Builder has skills enabled.**
+
+When creating new agents:
+- ❌ **NEVER enable skills** in agent configs
+- ❌ **NEVER add builder or doppler skills** to other agents
+- ✅ Agents get tools through OpenClaw (exec, sessions_send, etc.)
+- ✅ Only Builder manages infrastructure (Doppler, git, etc.)
+
+**Verified agents:**
+- Builder: builder + doppler skills ✅
+- Aivar: NO skills ✅
+- Lina: NO skills ✅
+
+If skills appear in other agents' configs, **remove immediately** and restart.
