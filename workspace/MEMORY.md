@@ -61,3 +61,15 @@ _Last updated: 2026-03-02 (fixed stale-token restart logic in healthcheck)_
   - Compares pre-memory vs post-memory session metrics
   - Sends Telegram report automatically
   - Documented in: `CLAUDE_CONTEXT_LOG.md` (2026-03-02 entry)
+
+## Domain Configuration
+
+- **Domain:** chuday.eu
+- **Reverse Proxy:** Caddy (Docker container: openclaw-caddy-proxy)
+- **SSL:** Auto-managed by Caddy (Let's Encrypt)
+- **Backend:** OpenClaw gateway on localhost:18789
+- **Paths:**
+  - `/` → 301 redirect → `/clawagent/`
+  - `/clawagent/*` → OpenClaw Control UI
+- **Config:** `/home/builder/proxy/Caddyfile`
+- **Restart:** `cd /home/builder/proxy && docker-compose restart`
