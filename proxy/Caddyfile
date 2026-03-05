@@ -1,7 +1,11 @@
 chuday.eu {
-	# Redirect root to control UI (must be first)
+	# Redirect root to control UI
 	redir / /clawagent/ permanent
 	
-	# Proxy OpenClaw control UI and all subpaths
-	reverse_proxy /clawagent* host.docker.internal:18789
+	# Proxy OpenClaw control UI with WebSocket support
+	reverse_proxy /clawagent* host.docker.internal:18789 {
+		# WebSocket support
+		header_up Upgrade {http.request.header.Upgrade}
+		header_up Connection {http.request.header.Connection}
+	}
 }
