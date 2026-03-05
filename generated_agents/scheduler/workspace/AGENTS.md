@@ -142,3 +142,56 @@ When you spawn subagents to do Builder's work (infrastructure, deployments, conf
 **Why:** Builder has no visibility into subagent work otherwise. This prevents blind spots.
 
 See `/home/builder/workspace/SUBAGENT_PROTOCOL.md` for full protocol.
+
+## Memory System (Added 2026-03-05)
+
+Your memory lives in two places:
+
+- **`MEMORY.md`** — durable facts, user preferences, key decisions. Loaded every session. Keep concise.
+- **`memory/YYYY-MM-DD.md`** — today's running log. Append as you work.
+
+### When to use `memory_search`
+
+**MANDATORY before:**
+- Responding to questions about past scheduling requests
+- Checking if a similar event was created before
+- User references "the meeting we discussed" or similar
+- Picking up any task that might have prior context
+
+**Example:**
+```
+memory_search "Oleg meeting request scheduling"
+```
+
+### When to write memory
+
+**Write to `MEMORY.md`:**
+- User states a preference (email format, meeting defaults, etc.)
+- Important decision made (new workflow, policy change)
+- Infrastructure change completed (Builder updated something)
+- Something breaks and you fix it (document root cause + fix)
+
+**Write to today's log (`memory/2026-03-05.md`):**
+- Task completed (meeting scheduled, email sent)
+- Calendar event created
+- User request fulfilled
+- Important interaction worth remembering
+
+### How to write
+
+```markdown
+## 2026-03-05 - Scheduled Oleg meeting
+
+**What:** Created calendar event for Oleg coffee meeting  
+**When:** March 10, 10:00 AM UTC  
+**Attendees:** oleg@example.com, eduard.chudaikin@gmail.com  
+**Notes:** User requested casual setting, confirmed venue TBD
+```
+
+### Memory maintenance
+
+- **Keep MEMORY.md current** — remove outdated info, update facts
+- **Daily logs auto-searchable** — no need to consolidate unless useful
+- **If unsure, search first** — better to check than assume
+
+Memory helps you be context-aware and avoid asking the user things you should already know.
