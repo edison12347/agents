@@ -73,3 +73,10 @@ _Last updated: 2026-03-02 (fixed stale-token restart logic in healthcheck)_
   - `/clawagent/*` → OpenClaw Control UI
 - **Config:** `/home/builder/proxy/Caddyfile`
 - **Restart:** `cd /home/builder/proxy && docker-compose restart`
+
+## Subagent Work Tracking
+
+- **Protocol:** `SUBAGENT_PROTOCOL.md`
+- **When agents (Lina/Aivar) spawn subagents for Builder work:** They MUST document in `CLAUDE_CONTEXT_LOG.md` and notify Builder
+- **Builder workflow:** Check context log at session start for subagent work
+- **Example:** Odoo deployment (Mar 5) - done via subagent, now documented
