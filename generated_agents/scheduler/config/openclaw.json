@@ -6,9 +6,9 @@
   "agents": {
     "defaults": {
       "model": {
-        "primary": "openai-codex/gpt-5.3-codex",
+        "primary": "anthropic/claude-sonnet-4-5",
         "fallbacks": [
-          "anthropic/claude-sonnet-4-5"
+          "openai-codex/gpt-5.3-codex"
         ]
       },
       "workspace": "/home/builder/generated_agents/scheduler/workspace"
