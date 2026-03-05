@@ -1,0 +1,7 @@
+chuday.eu {
+	# Redirect root to control UI (must be first)
+	redir / /clawagent/ permanent
+	
+	# Proxy OpenClaw control UI and all subpaths
+	reverse_proxy /clawagent* host.docker.internal:18789
+}
