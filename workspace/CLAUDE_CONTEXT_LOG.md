@@ -206,3 +206,28 @@ python3 /home/builder/scripts/usage_tracker.py --telegram       # send to Telegr
 - Lina's web_fetch now succeeds
 
 **Related:** Odoo deployment at /home/builder/odoo-deployment/ (created today by Claude Code or Lina, not yet documented in context log).
+
+## 2026-03-05 [Unknown Agent] via Subagent — Odoo v19 deployment for Preservability
+
+**What:** Deployed Odoo Community v19 with Docker Compose at `/home/builder/odoo-deployment/`. Set up company (Preservability), admin user (eduard.chudaikin@gmail.com), Lina PM user, installed CRM + Project modules, created test project with 2 tasks.
+
+**Why:** [Unknown - not documented at time of deployment]
+
+**Files:**
+- `/home/builder/odoo-deployment/docker-compose.yml` - PostgreSQL + Odoo services
+- `/home/builder/odoo-deployment/setup_odoo_final.py` - Database initialization script
+- `/home/builder/odoo-deployment/README.md` - Full deployment documentation
+- `/home/builder/odoo-deployment/verify_workflow.py` - Testing script
+- `/home/builder/odoo-deployment/simple_setup.py`, `setup_odoo.py` - Alternative setup scripts
+
+**Subagent:** [Unknown - discovered after completion]
+
+**Impact on Builder:** 
+- New Docker services running: `odoo_app` (port 8069), `odoo_db` (PostgreSQL)
+- Docker volumes: `odoo-db-data`, `odoo-web-data`
+- Access URL: http://localhost:8069
+- Database name: preservability
+- Credentials: eduard.chudaikin@gmail.com/admin (admin), lina@preservability.local/lina123 (PM user)
+- **Status:** Services running, not tracked in git
+
+**Note:** This entry was retroactively documented by Builder after discovering the deployment. Going forward, agents must document subagent work immediately per `SUBAGENT_PROTOCOL.md`.
