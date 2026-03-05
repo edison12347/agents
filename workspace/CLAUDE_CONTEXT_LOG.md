@@ -231,3 +231,15 @@ python3 /home/builder/scripts/usage_tracker.py --telegram       # send to Telegr
 - **Status:** Services running, not tracked in git
 
 **Note:** This entry was retroactively documented by Builder after discovering the deployment. Going forward, agents must document subagent work immediately per `SUBAGENT_PROTOCOL.md`.
+
+## 2026-03-05 Builder — Switched agents from Codex to Claude due to OpenAI backend errors
+
+**What:** Changed primary model for Lina and Aivar from `openai-codex/gpt-5.3-codex` to `anthropic/claude-sonnet-4-5`. Kept Codex as fallback.
+
+**Why:** OpenAI Codex backend experiencing server errors (request IDs: 3998bf60-9c34-43d5-93fd-96f4f5b7e961, e22b9517-1b44-4743-908a-dea7404ced10, 0675b1da-9f68-4bcd-b4d4-4a4eb90dc393). Lina was failing with "server_error" messages. Preventive switch for Aivar to avoid similar issues.
+
+**Files:**
+- `/home/builder/generated_agents/lina-pm-agent/config/openclaw.json`
+- `/home/builder/generated_agents/scheduler/config/openclaw.json`
+
+**Impact on Builder:** No impact. Lina and Aivar will use Claude as primary, Codex as fallback. Services await restart (healthcheck will apply within 5 min).
