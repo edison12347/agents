@@ -243,3 +243,28 @@ python3 /home/builder/scripts/usage_tracker.py --telegram       # send to Telegr
 - `/home/builder/generated_agents/scheduler/config/openclaw.json`
 
 **Impact on Builder:** No impact. Lina and Aivar will use Claude as primary, Codex as fallback. Services await restart (healthcheck will apply within 5 min).
+
+## 2026-03-05 Builder — Enabled memory system for Aivar
+
+**What:** Implemented memory capabilities for Aivar (scheduler agent) using the same pattern as Builder. Created `MEMORY.md`, `memory/` directory structure, and added memory usage guidelines to `AGENTS.md`.
+
+**Why:** Eduard requested memory approach similar to Builder's. Memory enables Aivar to:
+- Remember past scheduling requests
+- Track user preferences across sessions
+- Maintain context about calendar events
+- Avoid re-asking for information already provided
+
+**Files:**
+- `/home/builder/generated_agents/scheduler/workspace/MEMORY.md` (created)
+- `/home/builder/generated_agents/scheduler/workspace/memory/2026-03-05.md` (created)
+- `/home/builder/generated_agents/scheduler/workspace/AGENTS.md` (updated with memory section)
+
+**Impact on Aivar:** 
+- `memory_search` and `memory_get` tools now available (OpenClaw built-ins)
+- Aivar should use memory_search before responding to scheduling queries
+- Aivar should write to memory/ daily logs after completing tasks
+- MEMORY.md pre-populated with user info, infrastructure notes, and known issues
+
+**Impact on Builder:** None. Same pattern, separate memory files.
+
+**Status:** Changes committed, awaits Aivar service restart to load new workspace files.
