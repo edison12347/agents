@@ -1,15 +1,20 @@
 chuday.eu {
-	# Redirect root to control UI
-	redir / /clawagent/ permanent
-	
-	# WebSocket proxy at root (for Control UI WebSocket connections)
-	@websocket_root {
-		path /
+	# Handle WebSocket upgrades FIRST (before redirect)
+	@websocket {
 		header Connection *Upgrade*
 		header Upgrade websocket
 	}
 	
-	reverse_proxy @websocket_root host.docker.internal:18789
+	# Proxy WebSocket connections directly to gateway
+	reverse_proxy @websocket host.docker.internal:18789
+	
+	# Redirect non-WebSocket root requests to control UI
+	@not_websocket {
+		path /
+		not header Connection *Upgrade*
+	}
+	
+	redir @not_websocket /clawagent/ permanent
 	
 	# Proxy all /clawagent paths
 	reverse_proxy /clawagent* host.docker.internal:18789
