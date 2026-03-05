@@ -1,11 +1,19 @@
 chuday.eu {
+	# Enable debug logging
+	log {
+		output file /var/log/caddy/access.log
+		level DEBUG
+	}
+	
 	# Redirect root to control UI
 	redir / /clawagent/ permanent
 	
-	# Proxy OpenClaw control UI with WebSocket support
+	# Proxy all /clawagent paths with full WebSocket support
 	reverse_proxy /clawagent* host.docker.internal:18789 {
-		# WebSocket support
-		header_up Upgrade {http.request.header.Upgrade}
-		header_up Connection {http.request.header.Connection}
+		# Explicitly pass through WebSocket headers
+		header_up Host {host}
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
 	}
 }
