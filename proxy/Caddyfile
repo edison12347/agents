@@ -1,4 +1,7 @@
 chuday.eu {
+	# Force HTTP/1.1 for WebSocket support
+	protocols h1
+	
 	# Handle WebSocket upgrades FIRST (before redirect)
 	@websocket {
 		header Connection *Upgrade*
@@ -18,4 +21,29 @@ chuday.eu {
 	
 	# Proxy all /clawagent paths
 	reverse_proxy /clawagent* host.docker.internal:18789
+}
+
+# Odoo subdomain
+odoo.chuday.eu {
+	log {
+		output file /var/log/caddy/odoo.log
+		level INFO
+	}
+	
+	# Proxy to Odoo on host
+	reverse_proxy host.docker.internal:8069 {
+		header_up Host {host}
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+		
+		# Increase timeouts for Odoo long-polling
+		transport http {
+			read_timeout 3600s
+			write_timeout 3600s
+		}
+	}
+	
+	# Enable compression
+	encode gzip
 }
