@@ -3,3 +3,9 @@ __pycache__/
 *.pyc
 *.pyo
 *.log
+
+# Enable Banking secrets/captures if EB_HOME is pointed inside the repo
+*.pem
+*.key
+session.json
+banking/captures/
