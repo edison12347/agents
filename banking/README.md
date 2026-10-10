@@ -66,6 +66,9 @@ expected. Paste that URL into the prompt; the script verifies `state`, calls `PO
 and saves `~/.enable-banking/session.json` (account UIDs + consent expiry). The code is single-use
 and short-lived, so paste it promptly.
 
+Non-interactive variant (e.g. when an agent runs it remotely): `authorize --start` prints the URL and
+saves the pending state; `authorize --finish '<callback URL>'` completes it.
+
 ```bash
 python3 banking/ebank.py accounts             # session status, accounts, consent expiry
 ```

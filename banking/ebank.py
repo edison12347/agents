@@ -133,6 +133,11 @@ def cmd_banks(args):
 
 def cmd_authorize(args):
     c = Client()
+    pending = EB_HOME / "pending_auth.json"
+    if args.finish:
+        if not pending.exists():
+            sys.exit(f"No pending authorization at {pending}. Run `authorize` (or `authorize --start`) first.")
+        return _finish_auth(c, json.loads(pending.read_text())["state"], args.finish, pending)
     aspsps = c.get("/aspsps", country=args.country, psu_type="personal")["aspsps"]
     want = args.bank.lower()
     match = [a for a in aspsps if a["name"].lower() == want] or [a for a in aspsps if want in a["name"].lower()]
@@ -152,12 +157,19 @@ def cmd_authorize(args):
         "psu_type": "personal",
     })
     print(f"Consent requested until {valid_until} ({days} days).\n\nOpen this URL and approve access in ING:\n\n  {auth['url']}\n")
+    print("After approval the browser is sent to the callback URL. The page will NOT load - that is expected.")
+    _write_private(pending, json.dumps({"state": state, "url": auth["url"]}))
+    if args.start:
+        print("Then run: ebank.py authorize --finish '<that URL>'")
+        return
     try:
         webbrowser.open(auth["url"])
     except Exception:
         pass
-    print("After approval the browser is sent to the callback URL. The page will NOT load - that is expected.")
-    redirected = input("Paste the full URL from the address bar: ").strip()
+    _finish_auth(c, state, input("Paste the full URL from the address bar: ").strip(), pending)
+
+
+def _finish_auth(c: Client, state: str, redirected: str, pending: Path):
     q = parse_qs(urlparse(redirected).query)
     if "error" in q:
         sys.exit(f"Bank returned error: {q['error'][0]} {q.get('error_description', [''])[0]}")
@@ -168,6 +180,7 @@ def cmd_authorize(args):
         sys.exit("No `code` parameter in the URL.")
     sess = c.post("/sessions", {"code": code})
     _write_private(EB_HOME / "session.json", json.dumps(sess, indent=2))
+    pending.unlink(missing_ok=True)
     print(f"\nSession {sess['session_id']} saved to {EB_HOME / 'session.json'}")
     _print_accounts(sess)
 
@@ -323,6 +336,9 @@ def main():
     a.add_argument("--bank", default=DEFAULT_BANK)
     a.add_argument("--country", default=DEFAULT_COUNTRY)
     a.add_argument("--redirect-url", default=DEFAULT_REDIRECT)
+    g = a.add_mutually_exclusive_group()
+    g.add_argument("--start", action="store_true", help="only print the bank URL (non-interactive)")
+    g.add_argument("--finish", metavar="REDIRECT_URL", help="complete a --start with the callback URL")
     a.add_argument("--days", type=int, help=f"consent length, capped by the bank and {MAX_CONSENT_DAYS}")
     a.set_defaults(fn=cmd_authorize)
 
